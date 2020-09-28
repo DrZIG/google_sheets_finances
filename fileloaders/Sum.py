@@ -12,7 +12,6 @@ BROKER_STATISTIC_WORKSHEET_NAME: str = "Brokers statistic"
 
 
 class BrokersStatistic(Summarize):
-    # __sheet: Optional[Sheet] = None
 
     def __init__(self, operations: List[Operation], commissions: List[Commission], enums: Enums) -> None:
         super().__init__()
@@ -41,8 +40,6 @@ class BrokersStatistic(Summarize):
         Result = namedtuple('all_results', ['column_name', 'results'])
         all_results = []
         for item in self.column_order:
-            # for currency in self.enums.get_currencies():
-            #     result1 = item.get_data_function(item.parameters, currency=currency)
             all_results.append(Result(item.column_name, item.get_data_function(item.parameters)))
 
         return None
@@ -62,8 +59,7 @@ class BrokersStatistic(Summarize):
         self.clean_list()
         self.sheet.update('A1:Z100', data, raw=False)
 
-
-    def __calculate_cash_flow(self, *args, **kwargs) -> dict:
+    def __calculate_cash_flow(self, *args) -> dict:
         all_data = {}
         Key = namedtuple('key', ['broker', 'currency'])
         for operation in self.operations:
@@ -76,15 +72,15 @@ class BrokersStatistic(Summarize):
 
         return all_data
 
-    def __calculate_commission_by_type(self, *args, **kwargs):
+    def __calculate_commission_by_type(self, *args):
         all_data = {}
+        commission_type = args[0]
         Key = namedtuple('key', ['broker', 'currency'])
-        for operation in self.operations:
-            key = Key(operation.get_broker(), operation.get_currency())
+        for commission in [commission for commission in self.commissions if commission.get_type() == commission_type]:
+            key = Key(commission.get_broker(), commission.get_currency())
             if key not in all_data:
                 all_data[key] = 0
 
-            all_data[key] += operation.get_income_sum()
-            all_data[key] += operation.get_expense_sum()
+            all_data[key] += commission.get_sum()
 
         return all_data

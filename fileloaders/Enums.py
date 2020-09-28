@@ -72,7 +72,6 @@ class Enums(Worksheet):
             for attribute_key, attribute_value in self.attributes.items():
                 column = self.properties_order.index(attribute_key)
                 for row in loop_generator(rows, pinned_rows_number + 1):
-                    # value = sheet.cell(row, column).value
                     value = row[column]
                     if not value:
                         break

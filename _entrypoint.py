@@ -22,7 +22,7 @@ class EntryPoint(unittest.TestCase):
 
         """
         			                Commissions							
-	            Движения средств	service fee		brocker comissions		ndfl		Всего	
+	            Cash flow       	service fee		brocker comissions		ndfl		Всего	
         Broker	Rub	usd	            rub	usd	        rub	usd	                rub	usd	    rub	        usd
         tinkoff	1000 100            50 5	        200	20	                5	0	    500 (10%)	100 (10%)
         vtb 	2000  200           0 0             200	20	                0	0	    300 (13%)	50 (15%)

@@ -108,6 +108,19 @@ class Commission(Worksheet, Row):
     def __bool__(self):
         return bool(self.commission_sum)
 
+    def get_type(self):
+        return self.commission_type
+
+    def get_currency(self):
+        return self.commission_currency
+
+    def get_broker(self):
+        return self.commission_broker
+
+    def get_sum(self):
+        pattern = re.compile(r'\s+')
+        return float(re.sub(pattern, '', self.commission_sum.replace(",", ".")))
+
     @classmethod
     def get_sheet_name(cls):
         return STOCKS_SHEET_NAME
