@@ -29,7 +29,7 @@ class GoogleSheet(object):
     def get_all_values(cls):
         return cls.get_sheet().get_all_values()
 
-    def __get_letter_by_number(self, number):
+    def _get_letter_by_number(self, number):
         all_letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
         return all_letters[number-1]
@@ -37,7 +37,7 @@ class GoogleSheet(object):
     def clean_list(self):
         self.get_sheet().clear()
 
-        all_cells = "A1:" + str(self.__get_letter_by_number(self.sheet.col_count)) + str(self.sheet.row_count)
+        all_cells = "A1:" + str(self._get_letter_by_number(self.sheet.col_count)) + str(self.sheet.row_count)
         self.unmerge_cells(all_cells)
 
     def unmerge_cells(self, a1_range):

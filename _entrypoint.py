@@ -6,20 +6,11 @@ from fileloaders.Stocks import Operation, Commission
 from fileloaders.Sum import BrokersStatistic
 from utilities.authorization import close_session
 from utilities.class_loader import load_operations, load_commissions
-from utilities.general import clean_worksheet
 
 
 class EntryPoint(unittest.TestCase):
 
     def test_reload_broker_statistic_page(self):
-        """
-        На странице должна быть инфа по брокерам:
-        1) Общая сумма движений денежных средств в рублях/долларах/всего
-        2) обшая сумма уплоченных комиссий по типам и валютам и всего
-        3) комиссии в процентах тоже как-то должны отражаться
-        4) Если добавится новый брокер, всё должно автоматом перечситываться
-        """
-
         """
         			                Commissions							
 	            Cash flow       	service fee		brocker comissions		ndfl		Summary	

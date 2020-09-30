@@ -28,6 +28,7 @@ class BrokersStatistic(Summarize):
 
     def refresh_data(self) -> None:
         Key = namedtuple('key', ['broker', 'currency'])
+
         # 1) get data
         cash_flow = self.__calculate_cash_flow(self.operations)
 
@@ -52,7 +53,7 @@ class BrokersStatistic(Summarize):
             row_data = ['Cash flow', '', currency]
             for broker in self.enums.get_brokers():
                 key = Key(broker, currency)
-                row_data.append(round(cash_flow[key], 4) if key in cash_flow else 0)
+                row_data.append(round(cash_flow[key], 4) if key in cash_flow else "-")
             data.append(row_data)
 
         for commission in self.enums.get_commission_types():
@@ -61,20 +62,49 @@ class BrokersStatistic(Summarize):
                 row_data = ['Commissions', commission, currency]
                 for broker in self.enums.get_brokers():
                     key = Key(broker, currency)
-                    row_data.append(round(commission_data[key], 4) if key in commission_data else 0)
+                    row_data.append(round(commission_data[key], 4) if key in commission_data else "-")
                 data.append(row_data)
 
         for currency in self.enums.get_currencies():
             row_data = ['Summary', '', currency]
             for broker in self.enums.get_brokers():
                 key = Key(broker, currency)
-                row_data.append(summary[key] if key in summary else 0)
+                if key in summary:
+                    value = summary[key]
+                    commission_sum = round(value["sum"], 4)
+                    percent = round(value["percent"], 4)
+                    row_data.append(f"{commission_sum} ({percent}%)")
+                else:
+                    row_data.append("-")
+                # row_data.append(summary[key] if key in summary else 0)
             data.append(row_data)
 
         self.clean_list()
-        self.sheet.update('A1:Z100', data, raw=False)
+        self.sheet.update("A1:Z100", data, raw=False)
 
-    def __calculate_cash_flow(self, operations) -> dict:
+        # 3) make it beauty
+        currencies_count = len(self.enums.get_currencies())
+
+        # Broker
+        self.sheet.merge_cells(f"D1:{self._get_letter_by_number(4 + len(self.enums.get_brokers()) - 1)}1")
+
+        # Cash flow
+        cash_flow_last_row = 3 + currencies_count - 1
+        self.sheet.merge_cells(f"A3:B{cash_flow_last_row}")
+
+        # Commissions
+        commissions_last_row = cash_flow_last_row + len(self.enums.get_commission_types()) * currencies_count
+        self.sheet.merge_cells(f"A{cash_flow_last_row + 1}:A{commissions_last_row}")
+        last_row = cash_flow_last_row
+        for _ in self.enums.get_commission_types():
+            first_row = last_row + 1
+            last_row = first_row + currencies_count - 1
+            self.sheet.merge_cells(f"B{first_row}:B{last_row}")
+
+        # Summary
+
+
+    def __calculate_cash_flow(self, operations: List[Operation]) -> dict:
         Key = namedtuple('key', ['broker', 'currency'])
         all_data = {}
         for operation in operations:
@@ -107,7 +137,7 @@ class BrokersStatistic(Summarize):
                 if key in commission_data:
                     commission_sum += commission_data[key]
 
-            persent = round(commission_sum * 100 / cash, 4)
-            all_data[key] = f"{commission_sum} ({persent}%)"
+            percent = commission_sum * 100 / cash
+            all_data[key] = {"sum": commission_sum, "percent": percent}
 
         return all_data
