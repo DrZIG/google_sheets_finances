@@ -1,4 +1,3 @@
-# import os
 import os
 from typing import Optional
 
@@ -10,7 +9,7 @@ from requests import Session
 
 _client: Optional[Client] = None
 _session: Optional[Session] = None
-# os.path.dirname("../resources/python-sheets-secret.json")
+
 
 def get_client() -> Client:
     global _client
@@ -29,6 +28,7 @@ def get_session() -> Session:
         _session = requests.Session()
         _session.headers.update({'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:45.0) Gecko/20100101 Firefox/45.0'})
     return _session
+
 
 def close_session():
     global _session
