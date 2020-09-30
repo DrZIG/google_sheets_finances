@@ -17,10 +17,7 @@ Scripts for filling and updating predefined google sheets in which I keep track 
 
 As result executing of *_entrypoint.test_reload_broker_statistic_page* the following page will be refresh:
 **_Summarization**:
-<table>
-  <thead>
-    <tr>
-      </th></th><th>test</th>
-    </tr>
-  </thead>
-</table>
+
+|      |      |      | : Broker : |||
+|^^    |      |      | : Broker : |||
+|:---- |:---- |:---- | :----------|:----|:----|
