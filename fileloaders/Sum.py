@@ -84,24 +84,29 @@ class BrokersStatistic(Summarize):
 
         # 3) make it beauty
         currencies_count = len(self.enums.get_currencies())
+        all_merge_ranges = []
 
         # Broker
-        self.sheet.merge_cells(f"D1:{self._get_letter_by_number(4 + len(self.enums.get_brokers()) - 1)}1")
+        all_merge_ranges.append(f"D1:{self._get_letter_by_number(4 + len(self.enums.get_brokers()) - 1)}1")
 
         # Cash flow
         cash_flow_last_row = 3 + currencies_count - 1
-        self.sheet.merge_cells(f"A3:B{cash_flow_last_row}")
+        all_merge_ranges.append(f"A3:B{cash_flow_last_row}")
 
         # Commissions
         commissions_last_row = cash_flow_last_row + len(self.enums.get_commission_types()) * currencies_count
-        self.sheet.merge_cells(f"A{cash_flow_last_row + 1}:A{commissions_last_row}")
+        all_merge_ranges.append(f"A{cash_flow_last_row + 1}:A{commissions_last_row}")
         last_row = cash_flow_last_row
         for _ in self.enums.get_commission_types():
             first_row = last_row + 1
             last_row = first_row + currencies_count - 1
-            self.sheet.merge_cells(f"B{first_row}:B{last_row}")
+            all_merge_ranges.append(f"B{first_row}:B{last_row}")
 
         # Summary
+        last_summary_row = last_row + currencies_count
+        all_merge_ranges.append(f"A{last_row + 1}:B{last_summary_row}")
+
+        self.merge_cells(all_merge_ranges)
 
 
     def __calculate_cash_flow(self, operations: List[Operation]) -> dict:

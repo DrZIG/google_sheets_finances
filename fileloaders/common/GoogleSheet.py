@@ -50,3 +50,34 @@ class GoogleSheet(object):
         }
 
         self.sheet.spreadsheet.batch_update(body)
+
+    def merge_cells(self, ranges: (str, list)) -> None:
+        request = []
+        for current_range in [ranges] if isinstance(ranges, str) else ranges:
+            grid_range = a1_range_to_grid_range(current_range, self.sheet.id)
+            request.append({"mergeCells": {"range": grid_range}})
+
+        body = {
+            "requests": request
+        }
+
+        self.sheet.spreadsheet.batch_update(body)
+
+    def set_horizontal_alignment(self, ranges: list, aligment_type) -> None:
+        requests = []
+        for current_range in [ranges] if isinstance(ranges, str) else ranges:
+            grid_range = a1_range_to_grid_range(current_range, self.sheet.id)
+            request = {
+                    "repeatCell": {
+                        "cell": {
+                            "userEnteredFormat": {
+                                "horizontalAlignment": aligment_type
+                            }
+                        },
+                        "range": grid_range,
+                        "fields": "userEnteredFormat"
+                    }
+                }
+            requests.append(request)
+
+        self.sheet.spreadsheet.batch_update({"requests": requests})
