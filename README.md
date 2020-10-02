@@ -18,8 +18,47 @@ Scripts for filling and updating predefined google sheets in which I keep track 
 As result executing of *_entrypoint.test_reload_broker_statistic_page* the following page will be refresh:
 **_Summarization**:
 
-| :                                         :|||:  Broker :|      |     |
-|^^                                          |||: Tinkoff :| VTB  | IB  |
-| :-------------- | :------------------ |:---- |:--------- |:---- |:--- |
-| : Cash flow                         : | RUB  | 100000,87 | -    | -   |
-| : Commissions : | Broker's comission  | RUB  | 100000,87 | -    | -   |
+<table>
+  <tr>
+    <td></td><td></td><td></td><td colspan="3">Broker</td>
+   </tr>
+  <tr>
+    <td></td><td></td><td></td><td>Tinkoff</td><td>VTB</td><td>IB</td>
+  </tr>
+  <tr>
+    <td rowspan="3" colspan="2">Cash flow</td><td>RUB</td><td>100500</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td>USD</td><td>1050</td><td>350</td><td>-</td>
+  </tr>
+  <tr>
+    <td>EUR</td><td>675</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="6">Commissions</td><td rowspan="3">Broker's comission</td><td>RUB</td><td>950</td><td>150</td><td>-</td>
+  </tr>
+  <tr>
+    <td>USD</td><td>9,87</td><td>1,6</td><td>-</td>
+  </tr>
+  <tr>
+    <td>EUR</td><td>-</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Service fee</td><td>RUB</td><td>390</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td>USD</td><td>3,19</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td>EUR</td><td>-</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="3" colspan="2">Summary</td><td>RUB</td><td>1400 (0,345%)</td><td>-</td><td>-</td>
+  </tr>
+  <tr>
+    <td>USD</td><td>13 (0,26%)</td><td>1,46 (0,035%)</td><td>-</td>
+  </tr>
+  <tr>
+    <td>EUR</td><td>-</td><td>-</td><td>-</td>
+  </tr>
+</table>
