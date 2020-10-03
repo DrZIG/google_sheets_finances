@@ -1,4 +1,4 @@
-from fileloaders.common.GoogleSheet import GoogleSheet
+from sheetloaders.common.GoogleSheet import GoogleSheet
 from utilities.authorization import get_client
 
 

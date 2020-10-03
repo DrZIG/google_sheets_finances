@@ -1,8 +1,8 @@
 from typing import Optional, List
 from gspread import Worksheet as Sheet
-from fileloaders.common.GoogleSheet import GoogleSheet
-from fileloaders.common.Row import Row
-from fileloaders.common.Worksheet import Worksheet
+from sheetloaders.common.GoogleSheet import GoogleSheet
+from sheetloaders.common.Row import Row
+from sheetloaders.common.Worksheet import Worksheet
 from utilities.general import loop_generator
 
 ENUMS_SHEET_NAME: str = "_Enums"

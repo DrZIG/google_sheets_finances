@@ -1,9 +1,9 @@
 from collections import namedtuple
 from typing import List
 
-from fileloaders.Enums import Enums
-from fileloaders.Stocks import Operation, Commission
-from fileloaders.common.Summarize import Summarize
+from sheetloaders.Enums import Enums
+from sheetloaders.Stocks import Operation, Commission
+from sheetloaders.common.Summarize import Summarize
 
 SUM_SHEET_NAME: str = "_Summarization"
 # Worksheets:

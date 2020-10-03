@@ -1,9 +1,9 @@
 import unittest
 from typing import List
 
-from fileloaders.Enums import Enums
-from fileloaders.Stocks import Operation, Commission
-from fileloaders.Sum import BrokersStatistic
+from sheetloaders.Enums import Enums
+from sheetloaders.Stocks import Operation, Commission
+from sheetloaders.Sum import BrokersStatistic
 from utilities.authorization import close_session
 from utilities.class_loader import load_operations, load_commissions
 
