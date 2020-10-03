@@ -1,7 +1,7 @@
 from collections import namedtuple
 from typing import List
 
-from general.Enums import HorizontalAlignment, VerticalAlignment
+from general.Enums import HorizontalAlignment, VerticalAlignment, WrapStrategy
 from sheetloaders.Enums import Enums
 from sheetloaders.Stocks import Operation, Commission
 from sheetloaders.common.Summarize import Summarize
@@ -88,6 +88,7 @@ class BrokersStatistic(Summarize):
         all_merge_ranges = []
         horizontal_alignment_ranges = []
         vertical_alignment_ranges = []
+        wrap_strategy_ranges = []
 
         # Broker
         broker_range = f"D1:{self._get_letter_by_number(4 + len(self.enums.get_brokers()) - 1)}1"
@@ -98,7 +99,7 @@ class BrokersStatistic(Summarize):
         cash_flow_last_row = 3 + currencies_count - 1
         cash_flow_range = f"A3:B{cash_flow_last_row}"
         all_merge_ranges.append(cash_flow_range)
-        horizontal_alignment_ranges.append(cash_flow_range)
+        # horizontal_alignment_ranges.append(cash_flow_range)
         vertical_alignment_ranges.append(cash_flow_range)
 
         # Commissions
@@ -113,12 +114,13 @@ class BrokersStatistic(Summarize):
             commission_range = f"B{first_row}:B{last_row}"
             all_merge_ranges.append(commission_range)
             vertical_alignment_ranges.append(commission_range)
+            wrap_strategy_ranges.append(commission_range)
 
         # Summary
         last_summary_row = last_row + currencies_count
         summary_range = f"A{last_row + 1}:B{last_summary_row}"
         all_merge_ranges.append(summary_range)
-        horizontal_alignment_ranges.append(summary_range)
+        # horizontal_alignment_ranges.append(summary_range)
         vertical_alignment_ranges.append(summary_range)
 
         self.merge_cells(all_merge_ranges)
@@ -126,6 +128,9 @@ class BrokersStatistic(Summarize):
         # alignment
         self.set_horizontal_alignment(horizontal_alignment_ranges, HorizontalAlignment.CENTER)
         self.set_vertical_alignment(vertical_alignment_ranges, VerticalAlignment.CENTER)
+
+        # PositionedLayout. Tests shows that PositionedLayout need to be corrected only for commission types
+        self.set_wrap_strategy(wrap_strategy_ranges, WrapStrategy.WRAP)
 
 
     def __calculate_cash_flow(self, operations: List[Operation]) -> dict:

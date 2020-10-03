@@ -20,3 +20,13 @@ class VerticalAlignment(str, Enum):
     BOTTOM = 'BOTTOM'
     CENTER = 'MIDDLE'  # according to https://stackoverflow.com/a/39214709/9712980 CENTER → MIDDLE
     TOP = 'TOP'
+
+
+class WrapStrategy(str, Enum):
+    """
+    according to https://developers.google.com/apps-script/reference/spreadsheet/wrap-strategy
+    """
+
+    WRAP = 'WRAP'
+    OVERFLOW = 'OVERFLOW'
+    CLIP = 'CLIP'

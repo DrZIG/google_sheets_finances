@@ -2,7 +2,7 @@ from typing import Optional
 from gspread import Worksheet as Sheet
 from gspread.utils import a1_range_to_grid_range
 
-from general.Enums import HorizontalAlignment, VerticalAlignment
+from general.Enums import HorizontalAlignment, VerticalAlignment, PositionedLayout, WrapStrategy
 from utilities.authorization import get_client
 
 
@@ -76,7 +76,7 @@ class GoogleSheet(object):
                             }
                         },
                         "range": grid_range,
-                        "fields": "userEnteredFormat"
+                        "fields": "userEnteredFormat.horizontalAlignment"
                     }
                 }
             requests.append(request)
@@ -95,7 +95,27 @@ class GoogleSheet(object):
                             }
                         },
                         "range": grid_range,
-                        "fields": "userEnteredFormat"
+                        "fields": "userEnteredFormat.verticalAlignment"
+                    }
+                }
+            requests.append(request)
+
+        self.sheet.spreadsheet.batch_update({"requests": requests})
+
+
+    def set_wrap_strategy(self, ranges: (str, list), wrap_strategy: WrapStrategy) -> None:
+        requests = []
+        for current_range in [ranges] if isinstance(ranges, str) else ranges:
+            grid_range = a1_range_to_grid_range(current_range, self.sheet.id)
+            request = {
+                    "repeatCell": {
+                        "cell": {
+                            "userEnteredFormat": {
+                                "wrapStrategy": wrap_strategy
+                            }
+                        },
+                        "range": grid_range,
+                        "fields": "userEnteredFormat.wrapStrategy"
                     }
                 }
             requests.append(request)
