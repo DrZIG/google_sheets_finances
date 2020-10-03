@@ -1,6 +1,7 @@
 from collections import namedtuple
 from typing import List
 
+from general.Enums import HorizontalAlignment, VerticalAlignment
 from sheetloaders.Enums import Enums
 from sheetloaders.Stocks import Operation, Commission
 from sheetloaders.common.Summarize import Summarize
@@ -85,28 +86,46 @@ class BrokersStatistic(Summarize):
         # 3) make it beauty
         currencies_count = len(self.enums.get_currencies())
         all_merge_ranges = []
+        horizontal_alignment_ranges = []
+        vertical_alignment_ranges = []
 
         # Broker
-        all_merge_ranges.append(f"D1:{self._get_letter_by_number(4 + len(self.enums.get_brokers()) - 1)}1")
+        broker_range = f"D1:{self._get_letter_by_number(4 + len(self.enums.get_brokers()) - 1)}1"
+        all_merge_ranges.append(broker_range)
+        horizontal_alignment_ranges.append(broker_range)
 
         # Cash flow
         cash_flow_last_row = 3 + currencies_count - 1
-        all_merge_ranges.append(f"A3:B{cash_flow_last_row}")
+        cash_flow_range = f"A3:B{cash_flow_last_row}"
+        all_merge_ranges.append(cash_flow_range)
+        horizontal_alignment_ranges.append(cash_flow_range)
+        vertical_alignment_ranges.append(cash_flow_range)
 
         # Commissions
         commissions_last_row = cash_flow_last_row + len(self.enums.get_commission_types()) * currencies_count
-        all_merge_ranges.append(f"A{cash_flow_last_row + 1}:A{commissions_last_row}")
+        commissions_range = f"A{cash_flow_last_row + 1}:A{commissions_last_row}"
+        all_merge_ranges.append(commissions_range)
+        vertical_alignment_ranges.append(commissions_range)
         last_row = cash_flow_last_row
         for _ in self.enums.get_commission_types():
             first_row = last_row + 1
             last_row = first_row + currencies_count - 1
-            all_merge_ranges.append(f"B{first_row}:B{last_row}")
+            commission_range = f"B{first_row}:B{last_row}"
+            all_merge_ranges.append(commission_range)
+            vertical_alignment_ranges.append(commission_range)
 
         # Summary
         last_summary_row = last_row + currencies_count
-        all_merge_ranges.append(f"A{last_row + 1}:B{last_summary_row}")
+        summary_range = f"A{last_row + 1}:B{last_summary_row}"
+        all_merge_ranges.append(summary_range)
+        horizontal_alignment_ranges.append(summary_range)
+        vertical_alignment_ranges.append(summary_range)
 
         self.merge_cells(all_merge_ranges)
+
+        # alignment
+        self.set_horizontal_alignment(horizontal_alignment_ranges, HorizontalAlignment.CENTER)
+        self.set_vertical_alignment(vertical_alignment_ranges, VerticalAlignment.CENTER)
 
 
     def __calculate_cash_flow(self, operations: List[Operation]) -> dict:

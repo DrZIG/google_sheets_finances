@@ -2,6 +2,7 @@ from typing import Optional
 from gspread import Worksheet as Sheet
 from gspread.utils import a1_range_to_grid_range
 
+from general.Enums import HorizontalAlignment, VerticalAlignment
 from utilities.authorization import get_client
 
 
@@ -63,7 +64,7 @@ class GoogleSheet(object):
 
         self.sheet.spreadsheet.batch_update(body)
 
-    def set_horizontal_alignment(self, ranges: list, aligment_type) -> None:
+    def set_horizontal_alignment(self, ranges: (str, list), alignment_type: HorizontalAlignment) -> None:
         requests = []
         for current_range in [ranges] if isinstance(ranges, str) else ranges:
             grid_range = a1_range_to_grid_range(current_range, self.sheet.id)
@@ -71,7 +72,26 @@ class GoogleSheet(object):
                     "repeatCell": {
                         "cell": {
                             "userEnteredFormat": {
-                                "horizontalAlignment": aligment_type
+                                "horizontalAlignment": alignment_type
+                            }
+                        },
+                        "range": grid_range,
+                        "fields": "userEnteredFormat"
+                    }
+                }
+            requests.append(request)
+
+        self.sheet.spreadsheet.batch_update({"requests": requests})
+
+    def set_vertical_alignment(self, ranges: (str, list), alignment_type: VerticalAlignment) -> None:
+        requests = []
+        for current_range in [ranges] if isinstance(ranges, str) else ranges:
+            grid_range = a1_range_to_grid_range(current_range, self.sheet.id)
+            request = {
+                    "repeatCell": {
+                        "cell": {
+                            "userEnteredFormat": {
+                                "verticalAlignment": alignment_type
                             }
                         },
                         "range": grid_range,

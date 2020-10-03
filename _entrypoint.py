@@ -10,6 +10,12 @@ from utilities.class_loader import load_operations, load_commissions
 
 class EntryPoint(unittest.TestCase):
 
+    def test_update_tikers_information(self) -> None:
+        """
+
+        :return:
+        """
+
     def test_reload_broker_statistic_page(self):
         """
         			                Commissions							
